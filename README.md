@@ -9,6 +9,12 @@ This project is a Python library inspired by the [PlaceToPay PHP Redirection Lib
 
 ---
 
+## Integration demo
+
+[Replit Checkout P2P Demo](https://replit.com/@ialopez11012/PlaceToPay-Web-Checkout-Integration-Demo?v=1)
+
+<https://github.com/user-attachments/assets/b2363b94-f59d-4ce4-8a44-72e2e503b6c2>
+
 ## Documentation
 
 See the [Web Checkout API docs](https://docs.placetopay.dev/en/checkout).
