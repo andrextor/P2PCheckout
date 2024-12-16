@@ -1,164 +1,91 @@
 
-# **python-checkout Python Integration Library**
+# **Checkout-P2P Python Integration Library**
 
+[![pypi](https://img.shields.io/pypi/v/checkout-p2p.svg)](https://pypi.org/project/checkout-p2p/)
 [![codecov](https://codecov.io/github/andrextor/python-checkout/graph/badge.svg?token=XPxrdb1Q2M)](https://codecov.io/github/andrextor/python-checkout)
 [![Build Status](https://github.com/andrextor/python-checkout/actions/workflows/python-app.yml/badge.svg)](https://github.com/andrextor/python-checkout/actions)
 
-This project is a Python library inspired by the [PlaceToPay PHP Redirection Library](https://github.com/dnetix/redirection). It aims to provide a robust and easy-to-use solution for integrating with PlaceToPay's payment gateway using Python. The library incorporates some enhancements to better fit Python's ecosystem and leverages modern Python tools like Pydantic and Requests for validation and HTTP handling.
+This project is a Python library inspired by the [PlaceToPay PHP Redirection Library](https://github.com/dnetix/redirection). It is designed to simplify integration with the [PlaceToPay Web Checkout payment gateway](https://docs.placetopay.dev/en/checkout). This library provides a robust and user-friendly solution for managing diverse payment scenarios, including single payments, recurring subscriptions, and payments using subscription tokens.
 
 ---
 
-> This `README.md` provides guidance on setting up and using the package in a local development environment. If you are looking to install and use the package in your project, please refer to the [Wiki - Quick Start](https://github.com/andrextor/python-checkout/wiki/Quick-Start). Additional documentation and detailed guides are available in the [Wiki](https://github.com/andrextor/python-checkout/wiki).
+## Documentation
 
----
+See the [Web Checkout API docs](https://docs.placetopay.dev/en/checkout).
 
-## **Table of contents**
+## Installation
 
-1. [Features](#features)
-2. [Technologies used](#technologies-used)
-3. [Development setup](#development-setup)
-    - [Installation for local development](#installation-for-local-development)
-    - [Testing and code quality](#testing-and-code-quality)
-    - [Adding dependencies](#adding-dependencies)
-4. [Contributing](#contributing)
-5. [License](#license)
+You don’t need this source code unless you intend to modify the package. To simply use the package, you can install it directly by running:
 
----
+```sh
+pip install checkout-p2p
+```
 
-## **Features**
+## Contribution
 
-- 🛠 **Inspired by Dnetix PHP Library**: A Python adaptation of the official PHP library, keeping the core concepts and enhancing usability.
-- 🔑 **Authentication Management**: Easily handle login and transaction keys with dynamic nonce and seed generation.
-- 📡 **Request Handling**: Create, query, collect, and reverse payment requests with ease.
-- ✅ **Validation with Pydantic**: Ensures data integrity and validation throughout the library.
-- 🌐 **HTTP Client Integration**: Built on top of the `requests` library for simplicity and flexibility.
-- 🔍 **Logging**: Built-in logging for tracing requests and responses.
+If you’d like to contribute, request, or suggest adding new features to the library, please follow the installation guide in our [Contribution Wiki.](https://github.com/andrextor/python-checkout/wiki/Contribution)
 
----
-
-## **Technologies used**
+### Requirements
 
 - **Python 3.13+**
-- **Pydantic**: For model validation and serialization.
-- **Requests**: For HTTP client requests.
-- **Logging**: To log and debug processes.
-- **Typing**: To ensure type safety and better developer experience.
 
----
+## Usage
 
-## **Development setup**
+Here’s a quick example to get you started with the library:
 
-### **Installation for local development**
+1.Configuration
 
-Clone the repository and install the required dependencies:
+Set up your Settings object with the necessary credentials:
 
-```bash
-git clone https://github.com/andrextor/python-checkout.git
-cd python-checkout
+```python
+from checkout import Checkout, RedirectRequest
+
+# Configuration
+checkout = Checkout({
+        "base_url": "https://checkout-co.placetopay.dev/",
+        "login": "e3bba31e633c32c48011a4a70ff60497",
+        "tranKey": "ak5N6IPH2kjljHG3",
+    })
 ```
 
-Install Poetry if not already installed:
+2.Create a Payment Request
 
-```bash
-curl -sSL https://install.python-poetry.org | python3 -
+```python
+from checkout import RedirectRequest
+
+redirect_request = RedirectRequest(
+        returnUrl="https://example.com/return",
+        ipAddress="192.168.1.1",
+        userAgent="Test User Agent",
+        payment={"reference": "TEST _q", "description": "Test Payment", "amount": {"currency": "COP", "total": 10000}}
+    )
+
+# This request returns a `RedirectResponse` object containing the process URL.
+response = checkout.request(redirect_request)
+
+print("Redirect to:", response.process_url)
 ```
 
-Install dependencies:
+3.Query a Payment Request
 
-```bash
-poetry install --no-root
+```python
+
+
+# Query a session by request ID. Returns a `RedirectInformation` object.
+query_response = checkout.query(123456)  # Replace with your request ID
+
+print("Request Status:", query_response.status)
 ```
 
-To activate the development environment:
+4.Reverse a Payment
 
-- **Centralized virtual environments** (default): Poetry places the virtual environments in a central location for all Poetry-managed projects:
-  `~/.cache/pypoetry/virtualenvs/`
+```python
 
-- **Project-Specific virtual environments** (optional): If you prefer the virtual environment to be created within your project directory (e.g., `./.venv`), you can configure Poetry to do so:
+# Reverse a transaction. Returns a `ReverseResponse` object.
+reverse_response = checkout.reverse("internal_reference")
 
-  ```bash
-  poetry config virtualenvs.in-project true
-  ```
-
-Activate the environment:
-
-```bash
-poetry shell
+print("Reverse Status:", reverse_response.status)
 ```
-
-### **Testing and code quality**
-
-Run tests:
-
-```bash
-poetry run pytest --cov=src
-```
-
-Use the following commands for code formatting and linting:
-
-```bash
-poetry run black .
-poetry run flake8
-poetry run isort .
-```
-
-Run type checks using mypy:
-
-```bash
-poetry run mypy src
-```
-
-### **Adding dependencies**
-
-To manage dependencies for your project, use Poetry as follows:
-
-- Add a runtime dependency:
-
-  ```bash
-  poetry add <package_name>
-  ```
-
-- Add a development dependency:
-
-  ```bash
-  poetry add --group dev <package_name>
-  ```
-
-This ensures that your project remains modular and adheres to best practices for dependency management.
-
----
-
-## **Contributing**
-
-We welcome contributions! Follow these steps to contribute:
-
-1. Fork the repository:
-
-   ```bash
-   git fork https://github.com/andrextor/python-checkout.git
-   ```
-
-2. Create a feature branch:
-
-   ```bash
-   git checkout -b feature/new-feature
-   ```
-
-3. Commit your changes:
-
-   ```bash
-   git commit -m "Add new feature"
-   ```
-
-4. Push to the branch:
-
-   ```bash
-   git push origin feature/new-feature
-   ```
-
-5. Open a pull request on GitHub.
-
----
 
 ## **License**
 
