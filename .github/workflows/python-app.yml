@@ -35,7 +35,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          poetry run pytest --cov=src --cov-report=xml
+          poetry run pytest --cov=checkout --cov-report=xml
 
   lint:
     name: Lint and Type Check
@@ -73,9 +73,6 @@ jobs:
          poetry run black .
 
       - name: Lint with Flake8
-
-
-
 
         run: |
           poetry run flake8
