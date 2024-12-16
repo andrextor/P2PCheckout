@@ -1,36 +1,78 @@
-name: Publish to PyPI
+name: P2P Checkout CI
 
 on:
   push:
-    tags:
-      - "v*" # Trigger only for version tags (e.g., v1.0.0)
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
 
 jobs:
-  publish:
-    name: Publish to PyPI
+  test:
+    name: Run Tests
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python
+      - name: Install Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.13"
-
-      - name: Install Poetry
+      
+      - name: Install poetry
         uses: abatilo/actions-poetry@v2
 
-      - name: Install dependencies
-        run: poetry install --no-root
+      - uses: actions/cache@v3
+        name: Define a cache for the virtual environment based on the dependencies lock file
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('poetry.lock') }}
 
-      - name: Build the package
-        run: poetry build
+      - name: Install the project dependencies
+        run: poetry install
 
-      # Publish to PyPI
-      - name: Publish to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      - name: Run Tests
         run: |
-          poetry publish --username $TWINE_USERNAME --password $TWINE_PASSWORD
+          poetry run pytest --cov=checkout --cov-report=xml
+
+  lint:
+    name: Lint and Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Python
+
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+      
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+
+      - uses: actions/cache@v3
+        name: Define a cache for the virtual environment based on the dependencies lock file
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('poetry.lock') }}
+
+      - name: Install the project dependencies
+        run: poetry install
+
+      - name: Run Isort
+        run: |
+          poetry run isort .
+
+      - name: Run Mypy
+        run: |
+          poetry run mypy .
+
+      - name: Check Formatting with Black
+        run: |
+         poetry run black .
+
+      - name: Lint with Flake8
+
+        run: |
+          poetry run flake8
