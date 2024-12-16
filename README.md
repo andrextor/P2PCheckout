@@ -40,7 +40,6 @@ Set up your Settings object with the necessary credentials:
 ```python
 from checkout import Checkout, RedirectRequest
 
-# Configuration
 checkout = Checkout({
         "base_url": "https://checkout-co.placetopay.dev/",
         "login": "e3bba31e633c32c48011a4a70ff60497",
@@ -60,7 +59,6 @@ redirect_request = RedirectRequest(
         payment={"reference": "TEST _q", "description": "Test Payment", "amount": {"currency": "COP", "total": 10000}}
     )
 
-# This request returns a `RedirectResponse` object containing the process URL.
 response = checkout.request(redirect_request)
 
 print("Redirect to:", response.process_url)
@@ -71,7 +69,6 @@ print("Redirect to:", response.process_url)
 ```python
 
 
-# Query a session by request ID. Returns a `RedirectInformation` object.
 query_response = checkout.query(123456)  # Replace with your request ID
 
 print("Request Status:", query_response.status)
