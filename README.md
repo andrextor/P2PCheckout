@@ -48,8 +48,8 @@ from checkout import Checkout, RedirectRequest
 
 checkout = Checkout({
         "base_url": "https://checkout-co.placetopay.dev/",
-        "login": "e3bba31e633c32c48011a4a70ff60497",
-        "tranKey": "ak5N6IPH2kjljHG3",
+        "login": "your_login",
+        "tranKey": "your_trankey",
     })
 ```
 
