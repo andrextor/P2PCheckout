@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "checkout-p2p"
-version = "0.1.3"
+version = "0.1.4"
 description = "Python library for PlaceToPay Checkout integration."
 authors = ["Iván Andrés López Gómez <andresgom11012@gmail.com>"]
 license = "MIT"
@@ -9,7 +9,7 @@ homepage = "https://github.com/andrextor/python-checkout"
 packages = [{include = "checkout"}]
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = ">=3.11, <4.0"
 annotated-types = "0.7.0"
 certifi = "2024.8.30"
 charset-normalizer = "3.4.0"

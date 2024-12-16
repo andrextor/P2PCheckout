@@ -27,7 +27,7 @@ If you’d like to contribute, request, or suggest adding new features to the li
 
 ### Requirements
 
-- **Python 3.13+**
+- **Python >=3.11, <4.0**
 
 ## Usage
 
