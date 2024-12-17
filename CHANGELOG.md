@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [V1.0.0] - 2024-12-17
+
 ### Added
 
 - Initial release of Checkout P2P version 1.0.0.
