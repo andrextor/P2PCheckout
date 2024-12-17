@@ -2,14 +2,16 @@ from typing import Any, Dict, Type, TypeVar, Union
 
 from checkout.contracts.carrier import Carrier
 from checkout.entities.settings import Settings
+from checkout.entities.status import Status
 from checkout.exceptions.checkout_exception import CheckoutException
 from checkout.messages.requests.collect import CollectRequest
+from checkout.messages.requests.invalidate_token import InvalidateToKenRequest
 from checkout.messages.requests.redirect import RedirectRequest
 from checkout.messages.responses.information import InformationResponse
 from checkout.messages.responses.redirect import RedirectResponse
 from checkout.messages.responses.reverse import ReverseResponse
 
-T = TypeVar("T", RedirectRequest, CollectRequest)
+T = TypeVar("T", RedirectRequest, CollectRequest, InvalidateToKenRequest)
 
 
 class Checkout:
@@ -26,7 +28,9 @@ class Checkout:
         self.settings: Settings = Settings(**data)
         self.logger = self.settings.logger()
 
-    def _validate_request(self, request: Union[RedirectRequest, CollectRequest, Dict], expected_class: Type[T]) -> T:
+    def _validate_request(
+        self, request: Union[RedirectRequest, CollectRequest, InvalidateToKenRequest, Dict], expected_class: Type[T]
+    ) -> T:
         """
         Validate the request object and convert it to the expected class if necessary.
 
@@ -98,3 +102,13 @@ class Checkout:
         """
         self.logger.info(f"Reversing transaction with reference: {internal_reference}.")
         return self.carrier.reverse(internal_reference)
+
+    def invalidateToken(self, invalidate_token_request: Union[InvalidateToKenRequest, Dict]) -> Status:
+        """
+        Reverse a transaction.
+
+        :param invalidate_token_request: InvalidateToKenRequest instance or dictionary with request data.
+        :return: Status object.
+        """
+        invalidate_token_request = self._validate_request(invalidate_token_request, InvalidateToKenRequest)
+        return self.carrier.invalidateToken(invalidate_token_request)
