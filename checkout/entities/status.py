@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Dict, Optional
 
 from pydantic import BaseModel, Field
 
@@ -33,6 +33,19 @@ class Status(BaseModel):
         date: Optional[str] = None,
     ) -> "Status":
         return cls(status=status, reason=reason, message=message, date=date)
+
+    @classmethod
+    def from_dict(cls, data: Dict) -> "Status":
+        """
+        Create a Status instance from a dictionary.
+        """
+        status_data = data.get("status", {})
+        return cls(
+            status=StatusEnum(status_data["status"]),
+            reason=status_data["reason"],
+            message=status_data.get("message", ""),
+            date=status_data.get("date", datetime.now().isoformat()),
+        )
 
     def to_dict(self) -> dict:
         """

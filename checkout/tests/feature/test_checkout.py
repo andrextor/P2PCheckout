@@ -217,6 +217,23 @@ class CheckoutTest(unittest.TestCase):
         self.assertEqual(payment.processor_fields[-1].keyword, "b24")
 
     @patch("requests.post")
+    @RedirectResponseMock.mock_response_decorator("invalidate_token_response_successful")
+    def test_invalidate_token_succssful(self, mock_post, mock_response):
+        mock_post.return_value = mock_response
+
+        instrument = Instrument(
+            token=Token(
+                token="5caef08ecd1230088a12e8f7d9ce20e9134dc6fc049c8a4857c9ba6e942b16b2", subtoken="test_subtoken"
+            )
+        )
+        invalidate_token_request = {"locale": "en_US", "instrument": instrument}
+        result = self.checkout.invalidateToken(invalidate_token_request)
+
+        self.assertEqual(result.status, "APPROVED")
+        self.assertEqual(result.reason, "00")
+        self.assertEqual(result.message, "The petition has been successfully approved")
+
+    @patch("requests.post")
     @RedirectResponseMock.mock_response_decorator("redirect_response_fail_authentication", 401)
     def test_request_fails_bad_request(self, mock_post, mock_response):
         mock_post.return_value = mock_response
@@ -283,3 +300,19 @@ class CheckoutTest(unittest.TestCase):
         self.assertEqual("FAILED", error_details["status"]["status"])
         self.assertEqual("request_not_valid", error_details["status"]["reason"])
         self.assertEqual("No existe la transacción que busca", error_details["status"]["message"])
+
+    @patch("requests.post")
+    @RedirectResponseMock.mock_response_decorator("invalidate_token_response_fails_token_not_valid", 400)
+    def test_invalidate_fails_when_token_is_not_valid(self, mock_post, mock_response):
+        mock_post.return_value = mock_response
+
+        instrument = Instrument(token=Token(token="not_valid_token", subtoken="test_subtoken"))
+        invalidate_token_request = {"locale": "en_US", "instrument": instrument}
+
+        with self.assertRaises(ClientErrorException) as context:
+            self.checkout.invalidateToken(invalidate_token_request)
+
+        error_details = json.loads(str(context.exception))["error_details"]
+        self.assertEqual("FAILED", error_details["status"]["status"])
+        self.assertEqual("XN", error_details["status"]["reason"])
+        self.assertEqual("The token used is invalid", error_details["status"]["message"])

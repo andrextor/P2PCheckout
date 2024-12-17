@@ -68,17 +68,7 @@ class SubscriptionInformation(BaseModel):
             data[nvp.keyword] = nvp.value
 
         if self.type == "token":
-            return Token(
-                token=data.get("token", ""),
-                subtoken=data.get("subtoken", ""),
-                franchise=data.get("franchise", ""),
-                franchiseName=data.get("franchiseName", ""),
-                issuerName=data.get("issuerName", ""),
-                lastDigits=data.get("lastDigits", ""),
-                validUntil=data.get("validUntil", ""),
-                cvv=data.get("cvv", ""),
-                installments=data.get("installments", 0),
-            )
+            return Token(**data)
 
         elif self.type == "account":
             return Account(

@@ -23,7 +23,7 @@ class DispersionPayment(Payment):
             "reference": data.get("reference", ""),
             "description": data.get("description", ""),
             "amount": data.get("amount"),
-            "allowPartial": data.get("allowPartial", False),
+            "allow_partial": data.get("allow_partial", False),
             "shipping": data.get("shipping"),
             "items": data.get("items", []),
             "recurring": data.get("recurring"),
@@ -31,8 +31,9 @@ class DispersionPayment(Payment):
             "discount": data.get("discount"),
             "subscribe": data.get("subscribe", False),
             "agreement": data.get("agreement"),
-            "agreementType": data.get("agreementType", ""),
+            "agreement_type": data.get("agreement_type", ""),
             "modifiers": data.get("modifiers", []),
+            "custom_fields": data.get("custom_fields", []),
         }
 
     def set_dispersion(self, data: Union[List[Dict], Dict]) -> "DispersionPayment":

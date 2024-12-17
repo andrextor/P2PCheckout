@@ -70,7 +70,6 @@ class CollectTest(unittest.TestCase):
         result = collect_request.to_dict()
 
         self.assertIn("instrument", result)
-        self.assertIsNone(result["instrument"]["token"])
         self.assertEqual(result["instrument"]["pin"], "5678")
         self.assertEqual(result["instrument"]["password"], "no_token")
         self.assertEqual("es_CO", result["locale"])

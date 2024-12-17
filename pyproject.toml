@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "checkout-p2p"
-version = "0.1.7"
+version = "1.0.0"
 description = "Python library for PlaceToPay Checkout integration."
 authors = ["Iván Andrés López Gómez <andresgom11012@gmail.com>"]
 license = "MIT"
@@ -81,7 +81,6 @@ ignore = ["E402", "W503"]
 [tool.coverage.run]
 branch = true
 source = ["checkout"]
-include = ["checkout/*"]
 omit = [
     "checkout/*/__init__.py",
     "*/__pycache__/*"
@@ -94,17 +93,14 @@ omit = [
 ]
 fail_under = 98
 show_missing = true
-show_covered = true
 
-[tool.coverage.html]
-title = "Test Coverage Report"
-
-[tool.coverage.xml]
-output = "coverage.xml"
-
+[tool.pytest.ini_options]
 filterwarnings = [
     "ignore:SOCKS support in urllib3 requires the installation of optional dependencies:urllib3.exceptions.DependencyWarning"
 ]
+
+[tool.coverage.xml]
+output = "coverage.xml"
 
 [tool.env]
 PYTHONPATH = "checkout"

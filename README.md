@@ -1,4 +1,3 @@
-
 # **Checkout-P2P Python Integration Library**
 
 [![pypi](https://img.shields.io/pypi/v/checkout-p2p.svg)](https://pypi.org/project/checkout-p2p/)
@@ -59,9 +58,9 @@ checkout = Checkout({
 from checkout import RedirectRequest
 
 redirect_request = RedirectRequest(
-        returnUrl="https://example.com/return",
-        ipAddress="192.168.1.1",
-        userAgent="Test User Agent",
+        return_url="https://example.com/return",
+        ip_address="192.168.1.1",
+        user_agent="Test User Agent",
         payment={"reference": "TEST _q", "description": "Test Payment", "amount": {"currency": "COP", "total": 10000}}
     )
 
@@ -73,21 +72,64 @@ print("Redirect to:", response.process_url)
 3.Query a Payment Request
 
 ```python
-
-
 query_response = checkout.query(123456)  # Replace with your request ID
 
 print("Request Status:", query_response.status)
 ```
 
-4.Reverse a Payment
+4 Charge using token
 
 ```python
+from checkout import CollectRequest
 
+collect_request = CollectRequest(
+        return_url="https://example.com/return",
+        ip_address="192.168.1.1",
+        user_agent="Test User Agent",
+        instrument={"token": {"token" : "your_token_c5583922eccd6d2061c1b0592b099f04e352a894f37ae51cf1a"}},
+        payer={
+            "email": "andres2@yopmail.com",
+            "name" : "Andres",
+            "surname": "López",
+            "document": "111111111",
+            "documentType": "CC",
+            "mobile": "+573111111111"
+        },
+        payment={
+            "reference": "TEST_COllECT", 
+            "description": "Test Payment", 
+            "amount": {"currency": "COP", "total": 15000}
+        }
+    )
+
+# Collect. Returns a `InformationResponse` object.
+collect_response = checkout.collect(collect_request)
+
+print("Collect Status :", collect_response.status)
+```
+
+5.Reverse a Payment
+
+```python
 # Reverse a transaction. Returns a `ReverseResponse` object.
 reverse_response = checkout.reverse("internal_reference")
 
 print("Reverse Status:", reverse_response.status)
+```
+
+6.Invalidate token
+
+```python
+invalidate_token_request = {
+        "locale": "en_US", 
+        "instrument": {"token" : {"token" : "your_token_c5583922eccd6d2061c1b0592b099f04e352a894f37ae51cf1a"}}
+}
+
+# invalite token. Returns a `Status` object.
+invalidate_response = checkout.invalidate_token(invalidate_token_request)
+
+print("Invalidate Status:", invalidate_response.status)
+print("Message:", invalidate_response.message)
 ```
 
 ## **License**
