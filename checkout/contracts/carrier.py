@@ -1,5 +1,7 @@
 from typing import Protocol
 
+from checkout.entities.instrument import Instrument
+from checkout.entities.status import Status
 from checkout.messages.requests.collect import CollectRequest
 from checkout.messages.requests.redirect import RedirectRequest
 from checkout.messages.responses.information import InformationResponse
@@ -26,4 +28,9 @@ class Carrier(Protocol):
     def reverse(self, transaction_id: str) -> ReverseResponse:
         """
         Reverse a transaction by its ID.
+        """
+
+    def invalidateToken(self, instrument: Instrument) -> Status:
+        """
+        invalidate a token.
         """

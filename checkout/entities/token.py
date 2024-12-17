@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -12,7 +13,7 @@ class Token(BaseModel):
     last_digits: str = Field(default="", description="Last digits of the card/token", alias="lastDigits")
     valid_until: str = Field(default="", description="Expiration date in ISO format", alias="validUntil")
     cvv: str = Field(default="", description="CVV associated with the token")
-    installments: int = Field(default=0, description="Number of installments")
+    installments: Optional[int] = Field(default=None, description="Number of installments")
 
     model_config = ConfigDict(populate_by_name=True, arbitrary_types_allowed=True)
 

@@ -1,7 +1,9 @@
 from typing import Dict
 
 from checkout.contracts.carrier import Carrier
+from checkout.entities.instrument import Instrument
 from checkout.entities.settings import Settings
+from checkout.entities.status import Status
 from checkout.messages.requests.collect import CollectRequest
 from checkout.messages.requests.redirect import RedirectRequest
 from checkout.messages.responses.information import InformationResponse
@@ -56,3 +58,10 @@ class RestCarrier(Carrier):
         """
         result = self._post("api/reverse", {"internalReference": transaction_id})
         return ReverseResponse(**result)
+
+    def invalidateToken(self, instrument: Instrument) -> Status:
+        """
+        Invalidate a token.
+        """
+        result = self._post("/api/instrument/invalidate", {"instrument": instrument.to_dict()})
+        return Status(**result)
