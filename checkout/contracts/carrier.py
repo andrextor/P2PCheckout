@@ -1,8 +1,8 @@
 from typing import Protocol
 
-from checkout.entities.instrument import Instrument
 from checkout.entities.status import Status
 from checkout.messages.requests.collect import CollectRequest
+from checkout.messages.requests.invalidate_token import InvalidateToKenRequest
 from checkout.messages.requests.redirect import RedirectRequest
 from checkout.messages.responses.information import InformationResponse
 from checkout.messages.responses.redirect import RedirectResponse
@@ -30,7 +30,7 @@ class Carrier(Protocol):
         Reverse a transaction by its ID.
         """
 
-    def invalidateToken(self, instrument: Instrument) -> Status:
+    def invalidateToken(self, invalidate_token_request: InvalidateToKenRequest) -> Status:
         """
         invalidate a token.
         """

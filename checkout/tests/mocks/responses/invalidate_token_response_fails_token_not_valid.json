@@ -1,0 +1,8 @@
+{
+    "status": {
+        "status": "FAILED",
+        "reason": "XN",
+        "message": "The token used is invalid",
+        "date": "2022-07-27T14:51:27-05:00"
+    }
+}
