@@ -14,7 +14,7 @@ class SubscriptionTest(unittest.TestCase):
         subscription = Subscription(
             reference="SUB123",
             description="Test subscription",
-            customFields=[
+            custom_fields=[
                 NameValuePair(keyword="field1", value="value1"),
                 NameValuePair(keyword="field2", value="value2"),
             ],
@@ -22,9 +22,9 @@ class SubscriptionTest(unittest.TestCase):
 
         self.assertEqual(subscription.reference, "SUB123")
         self.assertEqual(subscription.description, "Test subscription")
-        self.assertEqual(len(subscription.customFields), 2)
-        self.assertEqual(subscription.customFields[0].keyword, "field1")
-        self.assertEqual(subscription.customFields[0].value, "value1")
+        self.assertEqual(len(subscription.custom_fields), 2)
+        self.assertEqual(subscription.custom_fields[0].keyword, "field1")
+        self.assertEqual(subscription.custom_fields[0].value, "value1")
 
     def test_to_dict(self):
         """
@@ -33,7 +33,7 @@ class SubscriptionTest(unittest.TestCase):
         subscription = Subscription(
             reference="SUB123",
             description="Test subscription",
-            customFields=[
+            custom_fields=[
                 NameValuePair(keyword="field1", value="value1"),
                 NameValuePair(keyword="field2", value="value2"),
             ],
@@ -42,11 +42,10 @@ class SubscriptionTest(unittest.TestCase):
         expected_dict = {
             "reference": "SUB123",
             "description": "Test subscription",
-            "customFields": [
+            "fields": [
                 {"keyword": "field1", "value": "value1", "displayOn": DisplayOnEnum.NONE},
                 {"keyword": "field2", "value": "value2", "displayOn": DisplayOnEnum.NONE},
             ],
-            "fields": [],
         }
 
         self.assertEqual(subscription.to_dict(), expected_dict)
@@ -58,7 +57,7 @@ class SubscriptionTest(unittest.TestCase):
         subscription = Subscription()
         self.assertEqual(subscription.reference, "")
         self.assertEqual(subscription.description, "")
-        self.assertEqual(subscription.customFields, [])
+        self.assertEqual(subscription.custom_fields, [])
         self.assertEqual(subscription.fields_to_array(), [])
 
     def test_fields_to_array(self):

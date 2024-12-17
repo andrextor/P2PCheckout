@@ -10,10 +10,10 @@ class NameValuePairTest(unittest.TestCase):
         """
         Test initialization of NameValuePair with valid data.
         """
-        pair = NameValuePair(keyword="testKey", value="testValue", displayOn=DisplayOnEnum.BOTH)
+        pair = NameValuePair(keyword="testKey", value="testValue", display_on=DisplayOnEnum.BOTH)
         self.assertEqual(pair.keyword, "testKey")
         self.assertEqual(pair.value, "testValue")
-        self.assertEqual(pair.displayOn, DisplayOnEnum.BOTH)
+        self.assertEqual(pair.display_on, DisplayOnEnum.BOTH)
 
     def test_default_values(self):
         """
@@ -22,13 +22,13 @@ class NameValuePairTest(unittest.TestCase):
         pair = NameValuePair(keyword="defaultKey")
         self.assertEqual(pair.keyword, "defaultKey")
         self.assertIsNone(pair.value)
-        self.assertEqual(pair.displayOn, DisplayOnEnum.NONE)
+        self.assertEqual(pair.display_on, DisplayOnEnum.NONE)
 
     def test_to_dict(self):
         """
         Test conversion of NameValuePair to a dictionary.
         """
-        pair = NameValuePair(keyword="testKey", value={"key": "value"}, displayOn=DisplayOnEnum.RECEIPT)
+        pair = NameValuePair(keyword="testKey", value={"key": "value"}, display_on=DisplayOnEnum.RECEIPT)
         expected_dict = {
             "keyword": "testKey",
             "value": {"key": "value"},
@@ -40,7 +40,7 @@ class NameValuePairTest(unittest.TestCase):
         """
         Test dictionary conversion with exclusion of None values.
         """
-        pair = NameValuePair(keyword="testKey", displayOn=DisplayOnEnum.PAYMENT)
+        pair = NameValuePair(keyword="testKey", display_on=DisplayOnEnum.PAYMENT)
         expected_dict = {"keyword": "testKey", "displayOn": "payment", "value": None}
         self.assertEqual(pair.to_dict(), expected_dict)
 

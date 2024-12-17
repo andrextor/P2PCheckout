@@ -46,8 +46,16 @@ class Amount(AmountBase):
         Convert the Amount object to a dictionary including taxes and details.
         """
         parent_data = super().to_dict()
-        return {
+
+        data = {
             **parent_data,
             "taxes": self.taxes_to_dict(),
             "details": self.details_to_dict(),
         }
+
+        if self.tip is None:
+            del data["tip"]
+        if self.insurance is None:
+            del data["insurance"]
+
+        return data
