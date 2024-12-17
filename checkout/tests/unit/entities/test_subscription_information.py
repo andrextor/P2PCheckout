@@ -79,7 +79,7 @@ class SubsCriptionInformationTest(unittest.TestCase):
         self.assertEqual(result.token, "12345")
         self.assertEqual(result.subtoken, "54321")
         self.assertEqual(result.franchise, "visa")
-        self.assertEqual(result.validUntil, "2025-12-31")
+        self.assertEqual(result.valid_until, "2025-12-31")
 
     def test_parse_instrument_as_account(self):
         """
