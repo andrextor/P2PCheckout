@@ -12,15 +12,15 @@ class RecurringTest(unittest.TestCase):
         recurring = Recurring(
             periodicity="M",
             interval=1,
-            nextPayment="2024-01-01",
+            next_payment="2024-01-01",
         )
 
         assert recurring.periodicity == "M"
         assert recurring.interval == 1
-        assert recurring.nextPayment == "2024-01-01"
-        assert recurring.maxPeriods is None
-        assert recurring.dueDate == ""
-        assert recurring.notificationUrl == ""
+        assert recurring.next_payment == "2024-01-01"
+        assert recurring.max_periods == -1
+        assert recurring.due_date == ""
+        assert recurring.notification_url == ""
 
     def test_recurring_initialization_with_values(self):
         """
@@ -29,18 +29,18 @@ class RecurringTest(unittest.TestCase):
         recurring = Recurring(
             periodicity="M",
             interval=1,
-            nextPayment="2024-01-01",
-            maxPeriods=12,
-            dueDate="2024-12-31",
-            notificationUrl="https://example.com/notify",
+            next_payment="2024-01-01",
+            max_periods=12,
+            due_date="2024-12-31",
+            notification_url="https://example.com/notify",
         )
 
         assert recurring.periodicity == "M"
         assert recurring.interval == 1
-        assert recurring.nextPayment == "2024-01-01"
-        assert recurring.maxPeriods == 12
-        assert recurring.dueDate == "2024-12-31"
-        assert recurring.notificationUrl == "https://example.com/notify"
+        assert recurring.next_payment == "2024-01-01"
+        assert recurring.max_periods == 12
+        assert recurring.due_date == "2024-12-31"
+        assert recurring.notification_url == "https://example.com/notify"
 
     def test_recurring_to_dict(self):
         """
@@ -49,10 +49,10 @@ class RecurringTest(unittest.TestCase):
         recurring = Recurring(
             periodicity="M",
             interval=1,
-            nextPayment="2024-01-01",
-            maxPeriods=12,
-            dueDate="2024-12-31",
-            notificationUrl="https://example.com/notify",
+            next_payment="2024-01-01",
+            max_periods=12,
+            due_date="2024-12-31",
+            notification_url="https://example.com/notify",
         )
 
         recurring_dict = recurring.to_dict()
@@ -75,7 +75,7 @@ class RecurringTest(unittest.TestCase):
         recurring = Recurring(
             periodicity="D",
             interval=7,
-            nextPayment="2024-01-01",
+            next_payment="2024-01-01",
         )
 
         recurring_dict = recurring.to_dict()
@@ -84,7 +84,7 @@ class RecurringTest(unittest.TestCase):
             "periodicity": "D",
             "interval": 7,
             "nextPayment": "2024-01-01",
-            "maxPeriods": None,
+            "maxPeriods": -1,
             "dueDate": "",
             "notificationUrl": "",
         }

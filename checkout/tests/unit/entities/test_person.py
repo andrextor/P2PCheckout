@@ -13,7 +13,7 @@ class PersonTest(unittest.TestCase):
         person = Person()
 
         assert person.document == ""
-        assert person.documentType == ""
+        assert person.document_type == ""
         assert person.name == ""
         assert person.surname == ""
         assert person.company == ""
@@ -31,7 +31,7 @@ class PersonTest(unittest.TestCase):
 
         person = Person(
             document="123456789",
-            documentType="TIN",
+            document_type="TIN",
             name="John",
             surname="Doe",
             company="TestCorp",
@@ -41,7 +41,7 @@ class PersonTest(unittest.TestCase):
         )
 
         assert person.document == "123456789"
-        assert person.documentType == "TIN"
+        assert person.document_type == "TIN"
         assert person.name == "John"
         assert person.surname == "Doe"
         assert person.company == "TestCorp"
@@ -69,7 +69,7 @@ class PersonTest(unittest.TestCase):
 
         person = Person(
             document="123456789",
-            documentType="TIN",
+            document_type="TIN",
             name="John",
             surname="Doe",
             company="TestCorp",
@@ -95,7 +95,7 @@ class PersonTest(unittest.TestCase):
         """
         person = Person(
             document="123456789",
-            documentType="TIN",
+            document_type="TIN",
             name="John",
             surname="Doe",
             company="TestCorp",
@@ -104,7 +104,6 @@ class PersonTest(unittest.TestCase):
         )
 
         person_dict = person.to_dict()
-
         assert person_dict["document"] == "123456789"
         assert person_dict["documentType"] == "TIN"
         assert person_dict["name"] == "John"
@@ -112,4 +111,4 @@ class PersonTest(unittest.TestCase):
         assert person_dict["company"] == "TestCorp"
         assert person_dict["email"] == "john.doe@example.com"
         assert person_dict["mobile"] == "1234567890"
-        assert "address" not in person_dict
+        assert person_dict["address"] == ""
