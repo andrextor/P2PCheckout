@@ -190,5 +190,5 @@ class InformationTest(unittest.TestCase):
                 Transaction(reference="TX002", status=Status(status=StatusEnum.FAILED, reason="Failed")),
             ],
         )
-        print(information.last_transaction(approved=True))
+
         self.assertIsNone(information.last_transaction(approved=True))
